@@ -17,7 +17,7 @@ type orderItemsPage {
 type OrderItem {
     userId: ID!
     orderId: ID!
-    book: Book!
+    book: Book
     quantity: Int! 
 }
 
@@ -39,14 +39,10 @@ type Book @aws_iam @aws_cognito_user_pools	{
 
 type Mutation {
     createBook(newBook: BookInput): Book! @aws_auth(cognito_groups: ["admin"])
-    createOrder(newOrder: OrderInput): Boolean!
+    createOrder(newOrder: OrderInput): OrderItem!
 }
 
 input OrderInput {
-    items: [orderItemInput]
-}
-
-input orderItemInput {
     bookId: ID!
     quantity: Int!
     userId: ID!
