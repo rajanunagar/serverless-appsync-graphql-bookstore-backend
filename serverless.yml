@@ -1,0 +1,82 @@
+service: serverless-appasync-backend
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  lambdaHashingVersion: 20201221
+  stage: dev  
+  region: us-west-1
+
+plugins:
+  - serverless-appsync-plugin
+
+package:
+  individually: true
+  patterns:
+    - '!node_modules/**'
+    - '!mapping-templates/**'
+    - '!schema.graphql'
+    - '!package.json'
+    - '!Frontend/**'
+
+appSync:
+  name: youtubeAppSyncApi
+  # AdditionalAuthenticationProviders:
+  #   - AuthenticationType: AWS_IAM
+  # AuthenticationType: AMAZON_COGNITO_USER_POOLS
+  authentication: 
+    type: 'AMAZON_COGNITO_USER_POOLS'
+    config: 
+      awsRegion: us-west-1
+      defaultAction: ALLOW
+      # type: COGNITO_USER_POOLS
+      userPoolId: !Ref cognitoUserPool
+
+  resolvers:
+    getBookById:
+      type: Query
+      field: getBookById
+      kind: UNIT
+      dataSource: bookTable_DataSource
+      request: resolvers/unit/getBookById-request.vtl
+      response: resolvers/unit/getBookById-response.vtl
+    listBooks:
+      type: Query
+      field: listBooks
+      kind: UNIT
+      dataSource: bookTable_DataSource
+      request: resolvers/unit/listBooks-request.vtl
+      response: resolvers/unit/listBooks-response.vtl
+    myOrders:
+      type: Query
+      field: myOrders
+      kind: UNIT
+      dataSource: orderTable_DataSource
+      request: resolvers/unit/myOrders-request.vtl
+      response: resolvers/unit/myOrders-response.vtl
+    createBook:
+      type: Mutation
+      field: createBook
+      kind: UNIT
+      dataSource: bookTable_DataSource
+      request: resolvers/unit/createBook-request.vtl
+      response: resolvers/unit/createBook-response.vtl
+
+  dataSources:
+    bookTable_DataSource:
+      type: AMAZON_DYNAMODB
+      description: 'Amazon DynamoDB dataSource for books table'
+      config: 
+        tableName: !Ref booksTable
+    orderTable_DataSource:
+      type: AMAZON_DYNAMODB
+      description: 'Amazon DynamoDB dataSource for books table'
+      config: 
+        tableName: !Ref orderTable
+
+
+resources:
+  Resources:
+    ${file(resources.yml)}
+  
