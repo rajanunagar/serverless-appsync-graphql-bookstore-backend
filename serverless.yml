@@ -62,6 +62,13 @@ appSync:
       dataSource: bookTable_DataSource
       request: resolvers/unit/createBook-request.vtl
       response: resolvers/unit/createBook-response.vtl
+    createOrder:
+      type: Mutation
+      field: createOrder
+      kind: UNIT
+      dataSource: orderTable_DataSource
+      request: resolvers/unit/createOrder-request.vtl
+      response: resolvers/unit/createOrder-response.vtl
 
   dataSources:
     bookTable_DataSource:

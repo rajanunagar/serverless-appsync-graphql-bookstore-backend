@@ -1,0 +1,12 @@
+{
+    "version" : "2017-02-28",
+    "operation" : "PutItem",
+    "key": {
+        "userId" : $util.dynamodb.toDynamoDBJson($util.autoId())
+        "orderId" : $util.dynamodb.toDynamoDBJson($ctx.args.newBook.title)
+    },
+    "attributeValues" : {
+        "bookId" : $util.dynamodb.toDynamoDBJson($ctx.args.newBook.bookId),
+        "createdAt": $util.dynamodb.toDynamoDBJson($ctx.args.newBook.createdAt)
+    }
+}   
