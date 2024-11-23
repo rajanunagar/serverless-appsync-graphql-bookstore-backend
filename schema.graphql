@@ -49,6 +49,7 @@ input OrderInput {
 input orderItemInput {
     bookId: ID!
     quantity: Int!
+    userId: ID!
 }
 
 input BookInput {
