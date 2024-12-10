@@ -11,5 +11,8 @@
   "description": "",
   "devDependencies": {
     "serverless-appsync-plugin": "^2.9.1"
+  },
+  "dependencies": {
+    "serverless-iam-roles-per-function": "^3.2.0"
   }
 }
