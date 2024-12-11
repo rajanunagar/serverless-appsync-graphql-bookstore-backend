@@ -7,6 +7,8 @@ provider:
   lambdaHashingVersion: 20201221
   stage: dev  
   region: us-west-1
+  environment:
+    BOOKS_TABLE: !Ref booksTable
 
 plugins:
   - serverless-appsync-plugin
@@ -21,17 +23,25 @@ package:
     - '!package.json'
     - '!Frontend/**'
 
+functions:
+  getBookByIdLambda:
+    name: getBookByIdLambda
+    handler: resolvers/lambda/getBookById.handler
+    package:
+      patterns:
+        - '!getBookById.js'
+    iamRoleStatements:
+      - Effect: Allow
+        Action: dynamodb:GetItem
+        Resource: !GetAtt booksTable.Arn
+
 appSync:
   name: youtubeAppSyncApi
-  # AdditionalAuthenticationProviders:
-  #   - AuthenticationType: AWS_IAM
-  # AuthenticationType: AMAZON_COGNITO_USER_POOLS
   authentication: 
     type: 'AMAZON_COGNITO_USER_POOLS'
     config: 
       awsRegion: us-west-1
       defaultAction: ALLOW
-      # type: COGNITO_USER_POOLS
       userPoolId: !Ref cognitoUserPool
 
   pipelineFunctions:
@@ -43,12 +53,23 @@ appSync:
     getBookById:
       type: Query
       field: getBookById
+
+      # unit resolver
       # kind: UNIT
       # dataSource: bookTable_DataSource
       # request: resolvers/unit/getBookById-request.vtl
       # response: resolvers/unit/getBookById-response.vtl
-      functions: 
-        - getBookByIdFnPipeline
+
+      # pipeLine resolver
+      # functions: 
+      #   - getBookByIdFnPipeline
+
+      # lamdbda reolver
+      kind: UNIT
+      dataSource: awsLambdGetBookById_Fun
+      request: resolvers/unit/getBookByIdLambda-request.vtl
+      response: resolvers/unit/getBookByIdLambda-response.vtl
+
     listBooks:
       type: Query
       field: listBooks
@@ -89,6 +110,11 @@ appSync:
       description: 'Amazon DynamoDB dataSource for books table'
       config: 
         tableName: !Ref orderTable
+    awsLambdGetBookById_Fun:
+      type: AWS_LAMBDA
+      description: 'Lambda DataSources'
+      config:
+        functionName: getBookByIdLambda
 
 
 resources:

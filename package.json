@@ -10,6 +10,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@aws-sdk/lib-dynamodb": "^3.709.0",
     "serverless-appsync-plugin": "^2.9.1"
   },
   "dependencies": {
