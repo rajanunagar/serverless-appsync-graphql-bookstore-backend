@@ -11,7 +11,8 @@
   "description": "",
   "devDependencies": {
     "@aws-sdk/lib-dynamodb": "^3.709.0",
-    "serverless-appsync-plugin": "^2.9.1"
+    "serverless-appsync-plugin": "^2.9.1",
+    "uuid": "^11.0.3"
   },
   "dependencies": {
     "serverless-iam-roles-per-function": "^3.2.0"

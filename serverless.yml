@@ -34,6 +34,16 @@ functions:
       - Effect: Allow
         Action: dynamodb:GetItem
         Resource: !GetAtt booksTable.Arn
+  createBookLambda:
+    name: createBookLambda
+    handler: resolvers/lambda/createBook.handler
+    package:
+      patterns:
+        - '!createBook.js'
+    iamRoleStatements:
+      - Effect: Allow
+        Action: dynamodb:PutItem
+        Resource: !GetAtt booksTable.Arn
 
 appSync:
   name: youtubeAppSyncApi
@@ -87,10 +97,16 @@ appSync:
     createBook:
       type: Mutation
       field: createBook
+      # kind: UNIT
+      # dataSource: bookTable_DataSource
+      # request: resolvers/unit/createBook-request.vtl
+      # response: resolvers/unit/createBook-response.vtl
+
+       # lamdbda reolver
       kind: UNIT
-      dataSource: bookTable_DataSource
-      request: resolvers/unit/createBook-request.vtl
-      response: resolvers/unit/createBook-response.vtl
+      dataSource: awsLambdCreateBook_Fun
+      request: resolvers/unit/createBookLambda-request.vtl
+      response: resolvers/unit/createBookLambda-response.vtl
     createOrder:
       type: Mutation
       field: createOrder
@@ -112,9 +128,14 @@ appSync:
         tableName: !Ref orderTable
     awsLambdGetBookById_Fun:
       type: AWS_LAMBDA
-      description: 'Lambda DataSources'
+      description: 'Lambda DataSources for getBookById'
       config:
         functionName: getBookByIdLambda
+    awsLambdCreateBook_Fun:
+      type: AWS_LAMBDA
+      description: 'Lambda DataSources for Create Book'
+      config:
+        functionName: createBookLambda
 
 
 resources:
