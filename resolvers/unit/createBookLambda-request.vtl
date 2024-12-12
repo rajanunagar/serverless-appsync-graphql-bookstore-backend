@@ -3,6 +3,7 @@
     "operation": "Invoke",
     "payload": {
         "field": "createBook",
-        "arguments": $utils.toJson($context.arguments.newBook)
+        "arguments": $utils.toJson($context.arguments.newBook),
+        "bookId":$util.dynamodb.toDynamoDBJson($util.autoId())
     }
 }

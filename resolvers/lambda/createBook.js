@@ -1,5 +1,5 @@
 "use strict";
-const { v4 } = require("uuid");
+// const { v4 } = require("uuid");//getting issue that uuid package not found
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const { DynamoDBDocumentClient,PutCommand } = require("@aws-sdk/lib-dynamodb");
 const { BOOKS_TABLE } = process.env;
@@ -12,9 +12,9 @@ module.exports.handler = async (event) => {
   if (event.field === "createBook") {
     var { title,author,price } = event.arguments;
     try {
-    const id = v4();
+    // const id = v4();
     const newItem = {
-        bookId: id,
+        bookId: event.bookId.S,
         title,
         author,
         price,
