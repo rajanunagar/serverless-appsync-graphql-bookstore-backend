@@ -52,6 +52,8 @@ cognitoUserPool:
     UsernameAttributes: 
       - "email"
     UserPoolName: "YouTubeBookstoreUserpool"
+    AutoVerifiedAttributes:
+      - "email"
 
 # Cognito user pool client
 cognitoUserPoolClient:

@@ -9,7 +9,7 @@ type Subscription {
 }
 
 type Query {
-    getBookById(bookId: ID!): Book! @aws_iam
+    getBookById(bookId: ID!): Book! @aws_auth(cognito_groups: ["admin", "customer"])
     listBooks(limit: Int!, nextToken: String): BooksPage!
     myOrders(limit: Int!, nextToken: String): orderItemsPage!
 }
