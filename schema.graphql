@@ -10,9 +10,10 @@ type Subscription {
 
 type Query {
     getBookById(bookId: ID!): Book! @aws_auth(cognito_groups: ["admin", "customer"])
-    listBooks(limit: Int!, nextToken: String): BooksPage!
-    myOrders(limit: Int!, nextToken: String): orderItemsPage!
-}
+    listBooks(limit: Int!, nextToken: String): BooksPage! @aws_auth(cognito_groups: ["admin", "customer"])
+    myOrders(limit: Int!, nextToken: String): orderItemsPage! @aws_auth(cognito_groups: ["admin", "customer"])
+    getOrderByUserId(userId: ID!): orderItemsPage! @aws_auth(cognito_groups: ["admin", "customer"])
+} 
 
 type orderItemsPage {
     orderItems: [OrderItem]
@@ -23,7 +24,8 @@ type OrderItem {
     userId: ID!
     orderId: ID!
     book: Book
-    quantity: Int! 
+    quantity: Int!
+    bookId:ID! 
 }
 
 type BooksPage {
@@ -44,7 +46,7 @@ type Book @aws_iam @aws_cognito_user_pools	{
 
 type Mutation {
     createBook(newBook: BookInput): Book! @aws_auth(cognito_groups: ["admin"])
-    createOrder(newOrder: OrderInput): OrderItem!
+    createOrder(newOrder: OrderInput): OrderItem! @aws_auth(cognito_groups: ["admin", "customer"])
 }
 
 input OrderInput {

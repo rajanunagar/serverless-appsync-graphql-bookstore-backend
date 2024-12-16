@@ -79,7 +79,15 @@ appSync:
       dataSource: awsLambdGetBookById_Fun
       request: resolvers/unit/getBookByIdLambda-request.vtl
       response: resolvers/unit/getBookByIdLambda-response.vtl
-
+    
+    getOrderByUserId:
+      type: Query
+      field: getOrderByUserId
+      kind: UNIT
+      dataSource: orderTable_DataSource
+      request: resolvers/unit/getOrderByUserId-request.vtl
+      response: resolvers/unit/getOrderByUserId-response.vtl
+      
     listBooks:
       type: Query
       field: listBooks
