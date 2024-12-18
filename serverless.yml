@@ -21,7 +21,13 @@ package:
     - '!mapping-templates/**'
     - '!schema.graphql'
     - '!package.json'
+    - '!package-lock.json'
     - '!Frontend/**'
+    - '!README.md'
+    - "!.gitignore"
+    - '!resources.yml'
+    - '!resolvers/pipelines/**'
+    - '!resolvers/unit/**'
 
 functions:
   getBookByIdLambda:
@@ -29,7 +35,7 @@ functions:
     handler: resolvers/lambda/getBookById.handler
     package:
       patterns:
-        - '!getBookById.js'
+        - '!resolvers/lambda/createBook.js'
     iamRoleStatements:
       - Effect: Allow
         Action: dynamodb:GetItem
@@ -39,7 +45,7 @@ functions:
     handler: resolvers/lambda/createBook.handler
     package:
       patterns:
-        - '!createBook.js'
+         - '!resolvers/lambda/getBookById.js'
     iamRoleStatements:
       - Effect: Allow
         Action: dynamodb:PutItem
